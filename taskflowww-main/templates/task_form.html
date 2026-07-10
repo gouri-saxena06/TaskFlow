@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Edit Task' if task else 'New Task' }} — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h1>{{ 'Edit Task' if task else 'New Task' }}</h1>
+    <form method="post" id="task-form">
+        <div class="form-group">
+            <label for="title">TITLE</label>
+            <input class="form-input" type="text" name="title" id="title" required autofocus value="{{ task.title if task else '' }}" placeholder="What needs to be done?">
+        </div>
+        <div class="form-group">
+            <label for="description">DESCRIPTION</label>
+            <textarea class="form-textarea" name="description" id="description" rows="4" placeholder="Add details...">{{ task.description if task else '' }}</textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="priority">PRIORITY</label>
+                <select class="form-select" name="priority" id="priority">
+                    <option value="low" {{ 'selected' if task and task.priority == 'low' }}>Low</option>
+                    <option value="medium" {{ 'selected' if task and task.priority == 'medium' }}>Medium</option>
+                    <option value="high" {{ 'selected' if task and task.priority == 'high' }}>High</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="status">STATUS</label>
+                <select class="form-select" name="status" id="status">
+                    <option value="pending" {{ 'selected' if task and task.status == 'pending' }}>Pending</option>
+                    <option value="in_progress" {{ 'selected' if task and task.status == 'in_progress' }}>In Progress</option>
+                    <option value="completed" {{ 'selected' if task and task.status == 'completed' }}>Completed</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="due_date">DUE DATE</label>
+                <input class="form-input" type="date" name="due_date" id="due_date" value="{{ task.due_date if task and task.due_date else '' }}">
+            </div>
+            <div class="form-group">
+                <label for="category_id">CATEGORY</label>
+                <select class="form-select" name="category_id" id="category_id">
+                    <option value="">No Category</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat.id }}" {{ 'selected' if task and task.category_id == cat.id }}>{{ cat.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit" id="task-submit">{{ 'Update Task' if task else 'Create Task' }}</button>
+            <a class="btn btn-ghost" href="{{ url_for('dashboard') }}" id="task-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

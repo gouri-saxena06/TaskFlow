@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Categories — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h1>Categories</h1>
+    <form method="post" id="category-add-form">
+        <div class="category-add-row">
+            <input class="form-input" type="text" name="name" id="category-name" required placeholder="New category name...">
+            <div class="color-picker-wrapper" title="Choose color">
+                <input type="color" name="color" id="category-color" value="#6366f1">
+            </div>
+            <button class="btn btn-primary" type="submit" id="category-submit">Add</button>
+        </div>
+    </form>
+
+    <div class="category-list">
+        {% for cat in categories %}
+        <div class="category-item" id="category-{{ cat.id }}">
+            <div class="category-info">
+                <span class="category-color" style="background: {{ cat.color }}"></span>
+                <span class="category-name">{{ cat.name }}</span>
+                <span class="category-count">{{ cat.task_count }} task{{ 's' if cat.task_count != 1 else '' }}</span>
+            </div>
+            <div class="category-actions">
+                <form method="post" action="{{ url_for('delete_category', id=cat.id) }}" onsubmit="return confirm('Delete this category?')">
+                    <button class="btn btn-danger btn-sm" type="submit" id="delete-category-{{ cat.id }}">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if not categories %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-dim); margin-bottom: 8px;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+            </div>
+            <p>No categories yet. Create one above!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Task Manager{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="brand" href="{{ url_for('dashboard') if current_username else url_for('login') }}">TaskFlow</a>
+        {% if current_username %}
+        <div class="nav-links">
+            <a class="nav-link {{ 'active' if request.endpoint == 'dashboard' }}" href="{{ url_for('dashboard') }}" id="nav-dashboard">Dashboard</a>
+            <a class="nav-link {{ 'active' if request.endpoint == 'categories' }}" href="{{ url_for('categories') }}" id="nav-categories">Categories</a>
+            <a class="nav-link {{ 'active' if request.endpoint == 'profile' }}" href="{{ url_for('profile') }}" id="nav-profile">Profile</a>
+        </div>
+        <div class="nav-right">
+            <div style="position:relative">
+                <div class="nav-avatar">{{ current_username[0]|upper }}</div>
+                {% if overdue_count > 0 %}
+                <span class="nav-badge">{{ overdue_count }}</span>
+                {% endif %}
+            </div>
+            <span class="nav-user">{{ current_username }}</span>
+            <a class="nav-logout" href="{{ url_for('logout') }}" id="nav-logout">Logout</a>
+        </div>
+        {% endif %}
+    </nav>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

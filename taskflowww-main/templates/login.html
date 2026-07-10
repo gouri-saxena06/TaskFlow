@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Log In — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <h1>Welcome Back</h1>
+        <p class="auth-subtitle">Sign in to manage your tasks</p>
+        <form method="post" id="login-form">
+            <div class="form-group">
+                <label for="username">USERNAME</label>
+                <input class="form-input" type="text" name="username" id="username" required autofocus placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="password">PASSWORD</label>
+                <input class="form-input" type="password" name="password" id="password" required placeholder="Enter your password">
+            </div>
+            <button class="btn btn-primary btn-block" type="submit" id="login-submit">Sign In →</button>
+        </form>
+        <div class="auth-footer">
+            Don't have an account? <a href="{{ url_for('register') }}">Create one</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
